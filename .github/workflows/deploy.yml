@@ -23,21 +23,20 @@ jobs:
       - name: Install uv
         run: curl -LsSf https://astral.sh/uv/install.sh | sh
 
-      - name: Add uv to PATH
+      - name: Add uv to PATH # Ensures 'uv' command is available
         run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
-      - name: Create and activate virtual environment
+      - name: Install dependencies and run tests
+        shell: bash # Explicitly use bash to ensure 'source' works as expected
         run: |
-          uv venv .ci-venv # Create a venv named .ci-venv
+          uv venv .ci-venv # Create venv
           source .ci-venv/bin/activate # Activate it
-
-      - name: Install dependencies and project in editable mode (with test extras)
-        # uv will now use the activated .ci-venv
-        run: uv pip install -e ".[test]" 
-
-      - name: Run tests with pytest
-        # pytest will also use the Python from the activated .ci-venv
-        run: pytest -v
+          
+          echo "--- Installing dependencies ---"
+          uv pip install -e ".[test]" # Install in the activated venv
+          
+          echo "--- Running tests ---"
+          pytest -v # Run pytest in the activated venv
 
   # You can keep other jobs here if you had them, or add them later.
   # For example, the 'do_nothing' job from earlier is now replaced by 'test'.
