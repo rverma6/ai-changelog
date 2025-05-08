@@ -1,10 +1,37 @@
-name: Placeholder Workflow
+name: CI Workflow
 
-on: [push]
+on:
+  push:
+    branches: [ main ] # Or your default branch
+  pull_request:
+    branches: [ main ] # Or your default branch
 
 jobs:
-  do_nothing:
+  test: # Changed job name to 'test' for clarity
+    name: Run Python tests
     runs-on: ubuntu-latest
+
     steps:
-      - name: Run a one-line script
-        run: echo "Hello, world!"
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12' # Matches your project's Python version
+
+      - name: Install uv
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Add uv to PATH
+        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies and project in editable mode (with test extras)
+        run: uv pip install -e ".[test]"
+
+      - name: Run tests with pytest
+        run: pytest -v # '-v' for verbose output
+
+  # You can keep other jobs here if you had them, or add them later.
+  # For example, the 'do_nothing' job from earlier is now replaced by 'test'.
+  # If you want a separate job for deployment later, you can add it.
