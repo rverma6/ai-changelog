@@ -26,11 +26,18 @@ jobs:
       - name: Add uv to PATH
         run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
+      - name: Create and activate virtual environment
+        run: |
+          uv venv .ci-venv # Create a venv named .ci-venv
+          source .ci-venv/bin/activate # Activate it
+
       - name: Install dependencies and project in editable mode (with test extras)
-        run: uv pip install -e ".[test]"
+        # uv will now use the activated .ci-venv
+        run: uv pip install -e ".[test]" 
 
       - name: Run tests with pytest
-        run: pytest -v # '-v' for verbose output
+        # pytest will also use the Python from the activated .ci-venv
+        run: pytest -v
 
   # You can keep other jobs here if you had them, or add them later.
   # For example, the 'do_nothing' job from earlier is now replaced by 'test'.
