@@ -42,44 +42,53 @@ def cli():
 def fetch_commits_command(repo_path: str, since_tag: str | None, since_date: str | None, output_file: str):
     """
     Fetches commits from a Git repository and outputs them as JSON.
+    Also prints basic stats (commit count, unique authors) to stderr.
     """
-    # The get_commits function already handles these validation,
-    # but Click can also enforce some of this with parameter groups or custom validation if needed.
-    # For now, we rely on get_commits' internal validation.
-    # However, one explicit check here for user experience is good:
     if not since_tag and not since_date:
         click.echo("Error: Either --since-tag or --since-date must be provided.", err=True)
-        # You might want to use click.Context.exit(1) for better testing integration
-        sys.exit(1) 
-    # get_commits also checks for mutual exclusivity
+        sys.exit(1)
 
     try:
         commits_data = get_commits(
             repo_path=repo_path,
             since_tag=since_tag,
-            since_date_str=since_date # Pass the string directly
+            since_date_str=since_date
         )
 
-        json_output = json.dumps(commits_data, indent=2)
+        if not commits_data:
+            click.echo("No commits found in the specified range.", err=True)
+            # Output an empty list if that's the desired JSON output for no commits
+            json_output = json.dumps([], indent=2)
+        else:
+            commit_count = len(commits_data)
+            unique_authors = len(set(c['author'] for c in commits_data))
+            click.echo(f"Fetched {commit_count} commit(s) by {unique_authors} unique author(s).", err=True)
+            json_output = json.dumps(commits_data, indent=2)
 
         if output_file == '-':
-            click.echo(json_output)
+            click.echo(json_output) # JSON to stdout
         else:
             try:
+                # Ensure output directory exists if specified in path
+                # For simplicity, this example assumes output_file is just a filename
+                # or the directory already exists. For a robust CLI, you might want:
+                # import os
+                # os.makedirs(os.path.dirname(output_file), exist_ok=True)
+                # (Only if os.path.dirname(output_file) is not empty)
                 with open(output_file, 'w') as f:
                     f.write(json_output)
-                click.echo(f"Commit data successfully written to {output_file}")
+                click.echo(f"Commit data written to {output_file}", err=True) # Status to stderr
             except IOError as e:
                 click.echo(f"Error writing to output file {output_file}: {e}", err=True)
                 sys.exit(1)
 
-    except ValueError as e: # Catches errors from get_commits or json.dumps
+    except ValueError as e:
         click.echo(f"Error: {e}", err=True)
         sys.exit(1)
     except (git.exc.GitCommandError, git.exc.InvalidGitRepositoryError, git.exc.NoSuchPathError) as e:
         click.echo(f"Git error: {e}", err=True)
         sys.exit(1)
-    except Exception as e: # Catch any other unexpected errors
+    except Exception as e:
         click.echo(f"An unexpected error occurred: {e.__class__.__name__} - {e}", err=True)
         sys.exit(1)
 
