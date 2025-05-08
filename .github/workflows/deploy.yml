@@ -27,16 +27,23 @@ jobs:
         run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
       - name: Install dependencies and run tests
-        shell: bash # Explicitly use bash to ensure 'source' works as expected
+        shell: bash
+        working-directory: ${{ github.workspace }} # Explicitly set the working directory
         run: |
-          uv venv .ci-venv # Create venv
-          source .ci-venv/bin/activate # Activate it
+          echo "--- Current directory: $(pwd) ---"
+          echo "--- Listing files: ---"
+          ls -la
+          
+          echo "--- Creating virtual environment ---"
+          uv venv .ci-venv
+          source .ci-venv/bin/activate
           
           echo "--- Installing dependencies ---"
-          uv pip install -e ".[test]" # Install in the activated venv
+          # The -e .[test] assumes pyproject.toml is in the current directory
+          uv pip install -e ".[test]" 
           
           echo "--- Running tests ---"
-          pytest -v # Run pytest in the activated venv
+          pytest -v
 
   # You can keep other jobs here if you had them, or add them later.
   # For example, the 'do_nothing' job from earlier is now replaced by 'test'.
