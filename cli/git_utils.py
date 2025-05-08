@@ -21,7 +21,8 @@ def get_commits(
             "author": str,
             "date": str (ISO 8601 format),
             "subject": str,
-            "body": str
+            "body": str,
+            "parent_shas": list[str]
         }
 
     Raises:
@@ -74,13 +75,17 @@ def get_commits(
         message_lines = commit.message.splitlines(keepends=False)
         subject = message_lines[0] if message_lines else ""
         body = "\n".join(message_lines[1:]) if len(message_lines) > 1 else ""
+        
+        # Get parent SHAs
+        parent_shas = [p.hexsha for p in commit.parents]
 
         collected_commits.append({
             "sha": commit.hexsha,
             "author": commit.author.name,
             "date": commit.committed_datetime.isoformat(), # ISO 8601 format
             "subject": subject,
-            "body": body
+            "body": body,
+            "parent_shas": parent_shas
         })
         
     return collected_commits
