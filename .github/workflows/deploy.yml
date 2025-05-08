@@ -1,0 +1,10 @@
+name: Placeholder Workflow
+
+on: [push]
+
+jobs:
+  do_nothing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run a one-line script
+        run: echo "Hello, world!"

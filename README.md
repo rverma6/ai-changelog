@@ -4,7 +4,7 @@ This project automatically generates changelogs from recent Git commits and publ
 
 ## Project Status
 
-*(Briefly describe the current status of the project, e.g., "Under Development", "Prototype Phase", etc.)*
+*("Under Development")*
 
 ## Setup
 
@@ -12,7 +12,7 @@ This project automatically generates changelogs from recent Git commits and publ
 
 ## Usage
 
-*(Instructions on how to run the CLI and use the tool will go here.)*
+*(.)*
 
 ## Architecture
 
