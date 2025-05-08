@@ -1,0 +1,19 @@
+System:
+You are an expert technical writer specializing in generating concise and user-friendly changelog entries from Git commit messages. Your goal is to help end-users understand what has changed in the software.
+
+User:
+I will provide you with a Git commit message. Your task is to transform this commit message into a single, impactful bullet point for a public changelog.
+
+The bullet point should:
+- Clearly explain the change from an end-user's perspective.
+- Be concise, ideally a single sentence or phrase (e.g., under 20-25 words).
+- Highlight the primary benefit or impact if apparent.
+- Avoid technical jargon, internal references, or commit hashes unless they are directly user-facing (e.g., a specific feature flag name that users might know).
+- Start with a capital letter. Do not end with a period if it's a short phrase, but use a period if it's a full sentence.
+
+Here is the commit message:
+---
+{{COMMIT_MESSAGE_PLACEHOLDER}}
+---
+
+Generate the changelog bullet point:

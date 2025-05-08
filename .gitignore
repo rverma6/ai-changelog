@@ -1,0 +1,87 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+.env
+.venv/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.manifest
+*.spec
+pip-log.txt
+pip-delete-this-directory.txt
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+instance/
+.webassets-cache
+
+# Node.js / Tailwind CSS
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+package-lock.json
+# If you're using a Tailwind CSS build process that outputs to a specific directory:
+# tailwind_dist/
+# public/build/
+# dist/ (if also used for frontend build output, be careful if Python also uses it)
+
+# IDE / Editor specific
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.DS_Store
+Thumbs.db
+
+# OS specific
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+ehthumbs_vista.db
+
+# PyTest
+.pytest_cache/
+
+# Static site output (example, adjust if your Jinja output goes elsewhere)
+_site/
+docs/  # If using GitHub Pages from /docs folder and it's generated
+
+# Secrets
+*.env
+secrets.yml
+config.json # If it contains secrets
+
+# Jupyter Notebook
+.ipynb_checkpoints
