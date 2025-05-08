@@ -1,0 +1,31 @@
+[project]
+name = "ai_changelog_generator"
+version = "0.1.0"
+description = "AI-Powered Changelog Generator"
+# Add other metadata like authors, readme, license, etc. as needed
+requires-python = ">=3.12"
+dependencies = [
+    "click",
+    "gitpython",
+    "openai",  # Assuming you'll add this later
+    "jinja2",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "pytest-cov", # If you plan to use it
+]
+
+[project.scripts]
+ai-changelog = "cli.__main__:cli" # Makes 'ai-changelog' a command after install
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+# If you want to tell setuptools that 'cli' is a package directory:
+[tool.setuptools.packages.find]
+where = ["."]  # Look in the current directory
+include = ["cli*"]  # Include 'cli' and any sub-packages like 'cli.*'
+# exclude = []  # Optional: if you had other top-level Python files to exclude
